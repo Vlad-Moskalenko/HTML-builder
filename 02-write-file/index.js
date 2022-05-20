@@ -5,7 +5,7 @@ const path = require('path');
 const output = fs.createWriteStream(
     path.join(__dirname, 'text.txt'));
 
-stdout.write('Привет! Файл был создан. Ввведите текст:\n');
+stdout.write('Привет! Файл был создан. Введите текст:\n');
 
 stdin.on('data', data => {
     let textArr = data.toString().split(' ')
