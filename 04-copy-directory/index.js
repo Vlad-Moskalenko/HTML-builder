@@ -1,12 +1,10 @@
 const fs = require('fs')
-const fsPromises = fs.promises;
 const path = require('path')
 
-fsPromises.mkdir(
+fs.promises.mkdir(
     path.join(__dirname, 'files-copy'),
     { recursive: true }
 );
-
 
 fs.promises.readdir(path.join(__dirname, 'files-copy'))
     .then(filenames => {
@@ -14,8 +12,6 @@ fs.promises.readdir(path.join(__dirname, 'files-copy'))
             fs.unlink(path.join(__dirname, 'files-copy', `${filename}`),
                 (err => {
                     if (err) console.log(err);
-                    else {
-                    }
                 }
                 )
             )
@@ -29,9 +25,10 @@ fs.promises.readdir(path.join(__dirname, 'files-copy'))
 fs.readdir(
     path.join(__dirname, 'files'),
     { withFileTypes: true },
-    (err, files) => {
+    (error, files) => {
+        if (error) throw error;
         files.forEach(file => {
-            fsPromises.copyFile(
+            fs.promises.copyFile(
                 path.join(__dirname, 'files', `${file.name}`),
                 path.join(__dirname, 'files-copy', `${file.name}`),
             )

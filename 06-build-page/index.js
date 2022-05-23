@@ -25,24 +25,26 @@ const path = require('path');
     }
     fs.createWriteStream(path.join(__dirname, 'project-dist', 'index.html')).write(out)
 
-    fs.readdir(path.join(__dirname, 'styles'), { withFileTypes: true }, (err, files) => {
+    fs.readdir(path.join(__dirname, 'styles'), { withFileTypes: true }, (error, files) => {
+        if (error) throw error;
         let outputCss = fs.createWriteStream(path.join(__dirname, 'project-dist', 'style.css'));
         files.forEach(file => {
             if (
                 path.extname(`${file.name}`) == '.css'
             ) {
-                fs.createReadStream(path.join(__dirname, 'styles', `${file.name}`)).on('data', data => outputCss.write(data + '\n'))
+                fs.createReadStream(path.join(__dirname, 'styles', `${file.name}`)).on('data', data => outputCss.write(data + '\n\n'))
             }
         })
-
     }
     )
 
-    fs.readdir(path.join(__dirname, 'assets'), (err, dirs) => {
-        fs.mkdir(path.join(__dirname, 'project-dist', 'assets'), { recursive: true }, () => { })
+    fs.readdir(path.join(__dirname, 'assets'), (error, dirs) => {
+        if (error) throw error;
+        fs.mkdir(path.join(__dirname, 'project-dist', 'assets'), { recursive: true }, (error) => { if (error) throw error; })
         dirs.forEach(dir => {
-            fs.mkdir(path.join(__dirname, 'project-dist', 'assets', `${dir}`), { recursive: true }, () => { })
-            fs.readdir(path.join(__dirname, 'assets', `${dir}`), (err, files) => {
+            fs.mkdir(path.join(__dirname, 'project-dist', 'assets', `${dir}`), { recursive: true }, (error) => { if (error) throw error; })
+            fs.readdir(path.join(__dirname, 'assets', `${dir}`), (error, files) => {
+                if (error) throw error;
                 files.forEach(file => {
                     fs.promises.copyFile(
                         path.join(__dirname, 'assets', `${dir}`, `${file}`),

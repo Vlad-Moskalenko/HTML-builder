@@ -20,7 +20,3 @@ process.on('SIGINT', () => {
     stdout.write('Файл был изменен! Пока')
     process.exit()
 })
-
-
-
-
